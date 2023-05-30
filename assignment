@@ -1,0 +1,44 @@
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include <util/delay.h>
+
+#define MAX_TASKS 3
+#define STACK_SIZE 128
+
+typedef struct {
+    uint8_t stack[STACK_SIZE];
+    void (*taskFn)(void);
+} TaskControlBlock;
+
+TaskControlBlock tcb[MAX_TASKS];
+volatile uint8_t currentTask = 0;
+
+void task1(void) {
+    while (1) {
+        // Task 1: Slow spinning motor
+        PORTB |= (1 << PB0);
+        _delay_ms(100);
+        PORTB &= ~(1 << PB0);
+        _delay_ms(100);
+    }
+}
+
+void task2(void) {
+    while (1) {
+        // Task 2: Medium spinning motor
+        PORTB |= (1 << PB1);
+        _delay_ms(50);
+        PORTB &= ~(1 << PB1);
+        _delay_ms(50);
+    }
+}
+
+void task3(void) {
+    while (1) {
+        // Task 3: Fast spinning motor
+        PORTB |= (1 << PB2);
+        _delay_ms(25);
+        PORTB &= ~(1 << PB2);
+        _delay_ms(25);
+    }
+}
