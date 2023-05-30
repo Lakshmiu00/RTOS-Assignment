@@ -101,4 +101,66 @@ void contextSwitch(void) {
     
     // Update the current task index
     currentTask = (currentTask + 1) % MAX_TASKS;
+ // Load the context of the next task
+    asm volatile("pop r0\n\t"
+                 "out __SREG__, r0\n\t"
+                 "pop r31\n\t"
+                 "pop r30\n\t"
+                 "pop r29\n\t"
+                 "pop r28\n\t"
+                 "pop r27\n\t"
+                 "pop r26\n\t"
+                 "pop r25\n\t"
+                 "pop r24\n\t"
+                 "pop r23\n\t"
+                 "pop r22\n\t"
+                 "pop r21\n\t"
+                 "pop r20\n\t"
+                 "pop r19\n\t"
+                 "pop r18\n\t"
+                 "pop r17\n\t"
+                 "pop r16\n\t"
+                 "pop r15\n\t"
+                 "pop r14\n\t"
+                 "pop r13\n\t"
+                 "pop r12\n\t"
+                 "pop r11\n\t"
+                 "pop r10\n\t"
+                 "pop r9\n\t"
+                 "pop r8\n\t"
+                 "pop r7\n\t"
+                 "pop r6\n\t"
+                 "pop r5\n\t"
+                 "pop r4\n\t"
+                 "pop r3\n\t"
+                 "pop r2\n\t"
+                 "pop r1\n\t"
+                 "pop r0\n\t"
+                 "reti\n\t");
+}
+int main(void) {
+    // Initialize ports and timers
+    initializePorts();
+    initializeTimers();
+    
+    // Set the task functions in TCB
+    tcb[0].taskFn = task1;
+    tcb[1].taskFn = task2;
+    tcb[2].taskFn = task3;
+    
+    // Enable global interrupts
+    sei();
+    
+    while (1) {
+        // Context switch between tasks
+        contextSwitch();
+    }
 
+    return 0;
+}
+
+// Timer0 compare match ISR
+ISR(TIMER0_COMPA_vect) {
+    // Call the task function
+    tcb[currentTask].taskFn();
+}
