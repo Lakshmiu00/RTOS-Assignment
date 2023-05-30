@@ -57,6 +57,7 @@ void initializeTimers(void) {
     // Set compare value for 1ms interrupt
     OCR0A = 249;
     
+    
     // Enable compare match interrupt
     TIMSK0 = (1 << OCIE0A);
 }
