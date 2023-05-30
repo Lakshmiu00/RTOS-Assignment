@@ -22,7 +22,6 @@ void task1(void) {
         _delay_ms(100);
     }
 }
-
 void task2(void) {
     while (1) {
         // Task 2: Medium spinning motor
