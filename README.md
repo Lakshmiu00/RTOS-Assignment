@@ -2,3 +2,5 @@ The three tasks task1(), task2(), and task3() represent our  tasks. By turning 
 
 The relevant pins are assigned as outputs for the motor control by the initializePorts() function. The CTC mode is set for a 1ms interrupt on Timer0 via the initializeTimers() method. Every 1ms, the ISR(TIMER0_COMPA_vect) interrupt service routine is activated, and it calls the function of the active task.
 
+Note that this example uses the avr/io.h and avr/interrupt.h headers for AVR-specific registers and interrupts. Make sure you have the necessary AVR toolchain and libraries set up to compile and upload the code to the ATmega328P microcontroller
+
